@@ -4836,7 +4836,7 @@ bot.on("message", async (msg) => {
             // ===============================
             setTimeout(() => {
 
-                process.exit(1);
+                process.exit(0);
 
             }, 3000);
 
