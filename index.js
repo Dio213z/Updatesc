@@ -2610,7 +2610,7 @@ bot.command("delsafe", (ctx) => {
 
 bot.on("my_chat_member", async (ctx) => {
   try {
-    const status = ctx..my_chat_member.new_chat_member.status;
+    const status = ctx.my_chat_member.new_chat_member.status;
 
     if (status !== "member" && status !== "administrator") return;
     if (!antiCulik) return;
