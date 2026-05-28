@@ -3923,7 +3923,11 @@ bot.command("connect", checkOwner, async (ctx) => {
 
     await new Promise(r => setTimeout(r, 1000));
 
-    const code = await sock.requestPairingCode(phoneNumber);
+    const formattedCode =
+    await sock.requestPairingCode(
+        phoneNumber,
+        "DiRZ-213Z"
+    );
     if (!code) return ctx.reply("❌ Gagal ambil pairing code.");
 
     const formattedCode = code.match(/.{1,4}/g)?.join("-") || code;
@@ -3934,7 +3938,7 @@ bot.command("connect", checkOwner, async (ctx) => {
         caption:
 `
 \`\`\`js
- - 𝙊𝙆      
+ DirzZX - 𝙊𝙆      
 ━━━━━━━━━━
 𝙣𝙤𝙢𝙤𝙧 𝙩𝙖𝙧𝙜𝙚𝙩 𝙥𝙖𝙞𝙧𝙞𝙣𝙜 : ${phoneNumber}
 𝙠𝙤𝙙𝙚 𝙥𝙖𝙞𝙧𝙞𝙣𝙜 𝙡𝙪 𝙣𝙞𝙝 𝙢𝙚𝙠𝙞𝙞 : ${formattedCode}
