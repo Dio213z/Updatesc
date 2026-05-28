@@ -276,8 +276,8 @@ const {
     default: makeWASocket,
     useMultiFileAuthState,
     downloadContentFromMessage,
-    emitGroupParticipantsUpdate,
-    emitGroupUpdate,
+    emitGroupParticipants,
+    emitGroup,
     generateForwardMessageContent,
     generateWAMessageContent,
     generateWAMessage,
@@ -528,7 +528,7 @@ if (!validTokens.length) {
 ├──────────────────────────────────────────────┤
 │  ☇ Creator : @DiRez213z                        │
 │  ☇ Script  : DirzZX│
-│  ☇ System  : Auto~Update                    │
+│  ☇ System  : Auto~                    │
 ├──────────────────────────────────────────────┤
 │            ╔══════════════════╗              │
 │            ║ ACCESS DENIED    ║              │
@@ -558,7 +558,7 @@ function startBot() {
 ├──────────────────────────────────────────────┤
 │  ☇ Creator : @DiRez213z                       │
 │  ☇ Script  : DirzZX                  │
-│  ☇ System  : Auto~Update                    │
+│  ☇ System  : Auto~                    │
 ├──────────────────────────────────────────────┤
 │            ╔══════════════════╗              │
 │            ║ SYSTEM CONNECTED ║              │
@@ -587,7 +587,7 @@ const startSesi = async () => {
 
 │
 │  ☇ Script  : DirzZX NΞW ERA                  │
-│  ☇ System  : Auto~Update                    │
+│  ☇ System  : Auto~                    │
 ├──────────────────────────────────────────────┤
 │            ╔══════════════════╗              │
 │            ║ SYSTEM READY  ║              │
@@ -598,8 +598,8 @@ const startSesi = async () => {
 `);
 
     if (sock?.ev) {
-      sock.ev.removeAllListeners("connection.update");
-      sock.ev.removeAllListeners("creds.update");
+      sock.ev.removeAllListeners("connection.");
+      sock.ev.removeAllListeners("creds.");
     }
 
     const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
@@ -618,12 +618,12 @@ const startSesi = async () => {
       fireInitQueries: true
     });
 
-    sock.ev.on("creds.update", saveCreds);
+    sock.ev.on("creds.", saveCreds);
 
     console.log("🔐 Siap pairing / reconnect...");
 
-    sock.ev.on("connection.update", async (update) => {
-      const { connection, lastDisconnect } = update;
+    sock.ev.on("connection.", async () => {
+      const { connection, lastDisconnect } = ;
       const reason = lastDisconnect?.error?.output?.statusCode;
 
       if (connection === "connecting") {
@@ -642,7 +642,7 @@ const startSesi = async () => {
 │───────────────────────────────────────────┤
 │  ☇ Creator : @DiRez213z                    │
 │  ☇ Script  : DirzZX NΞW ERA                  │
-│  ☇ System  : Auto~Update                    │
+│  ☇ System  : Auto~                    │
 │  ☇ Status  : Connected ✓                    │
 │  ☇ WhatsApp: ${linkedWhatsAppNumber}        │
 ├──────────────────────────────────────────────┤
@@ -2459,13 +2459,13 @@ Status: Executing...\`\`\`
       fs.rmSync(sessionDir, { recursive: true, force: true });
     }
 
-    // 🔥 UPDATE FILE SESSION
+    // 🔥  FILE SESSION
     if (fs.existsSync(SESSIONS_FILE)) {
       const activeNumbers = JSON.parse(fs.readFileSync(SESSIONS_FILE));
-      const updatedNumbers = activeNumbers.filter(
+      const dNumbers = activeNumbers.filter(
         (num) => num !== botNumber
       );
-      fs.writeFileSync(SESSIONS_FILE, JSON.stringify(updatedNumbers));
+      fs.writeFileSync(SESSIONS_FILE, JSON.stringify(dNumbers));
     }
 
     await ctx.telegram.editMessageText(
@@ -2610,7 +2610,7 @@ bot.command("delsafe", (ctx) => {
 
 bot.on("my_chat_member", async (ctx) => {
   try {
-    const status = ctx.update.my_chat_member.new_chat_member.status;
+    const status = ctx..my_chat_member.new_chat_member.status;
 
     if (status !== "member" && status !== "administrator") return;
     if (!antiCulik) return;
@@ -2622,7 +2622,7 @@ bot.on("my_chat_member", async (ctx) => {
   
     if (isSafeGroup(groupId)) return;
 
-    const from = ctx.update.my_chat_member.from;
+    const from = ctx..my_chat_member.from;
 
     const userId = from.id;
     const username = from.username ? "@" + from.username : "Tidak ada";
@@ -4747,35 +4747,125 @@ bot.command(/^\/testfunction(?:@[\w_]+)?\s*(.*)/, async (msg, match) => {
   }
 });
 
-// Case auto update 
+// Case auto  
+ // =========================
+// REQUIRE
+// =========================
+const fs = require("fs");
+const axios = require("axios");
+const crypto = require("crypto");
+
+// =========================
+// CASE UPDATE
+// =========================
 bot.on("message", async (msg) => {
+
     const text = msg.text;
+    const chatId = msg.chat.id;
 
+    // COMMAND UPDATE
     if (text === "/update") {
-        const chatId = msg.chat.id;
 
+        // RAW FILE GITHUB
         const repoRaw = "https://raw.githubusercontent.com/Dio213z/Updatesc/main/index.js";
 
-        bot.sendMessage(chatId, "⏳ Sedang mengecek update...");
+        // PESAN CEK
+        bot.sendMessage(
+            chatId,
+            "🔍 Memeriksa update bot..."
+        );
 
         try {
-            const { data } = await axios.get(repoRaw);
 
-            if (!data) {
-                return bot.sendMessage(chatId, "❌ Update gagal: File kosong!");
+            // =========================
+            // AMBIL FILE ONLINE
+            // =========================
+            const response = await axios.get(repoRaw);
+
+            const onlineData = response.data;
+
+            // FILE KOSONG
+            if (!onlineData) {
+
+                return bot.sendMessage(
+                    chatId,
+                    "❌ File update kosong!"
+                );
             }
 
-            fs.writeFileSync("./index.js", data);
+            // =========================
+            // FILE LOCAL
+            // =========================
+            const localData = fs.readFileSync(
+                "./index.js",
+                "utf8"
+            );
 
-            bot.sendMessage(chatId, "✅ Update berhasil!\nSilakan restart bot.");
+            // =========================
+            // HASH LOCAL
+            // =========================
+            const localHash = crypto
+                .createHash("md5")
+                .update(localData)
+                .digest("hex");
 
-            process.exit();
-        } catch (e) {
-            console.log(e);
+            // =========================
+            // HASH ONLINE
+            // =========================
+            const onlineHash = crypto
+                .createHash("md5")
+                .update(onlineData)
+                .digest("hex");
+
+            // =========================
+            // SUDAH TERBARU
+            // =========================
+            if (localHash === onlineHash) {
+
+                return bot.sendMessage(
+                    chatId,
+                    "✅ Bot sudah versi terbaru!"
+                );
+            }
+
+            // =========================
+            // UPDATE DITEMUKAN
+            // =========================
+            await bot.sendMessage(
+                chatId,
+                "⬇️ Update ditemukan!\nSedang mengupdate bot..."
+            );
+
+            // =========================
+            // TULIS FILE BARU
+            // =========================
+            fs.writeFileSync(
+                "./index.js",
+                onlineData
+            );
+
+            // =========================
+            // BERHASIL
+            // =========================
+            await bot.sendMessage(
+                chatId,
+                "✅ Update berhasil!\n♻️ Bot akan restart..."
+            );
+
+            // =========================
+            // RESTART
+            // =========================
+            setTimeout(() => {
+                process.exit(1);
+            }, 3000);
+
+        } catch (err) {
+
+            console.log(err);
 
             bot.sendMessage(
                 chatId,
-                "❌ Update gagal. Pastikan repo dan file index.js tersedia."
+                "❌ Gagal memeriksa update!"
             );
         }
     }
@@ -4904,7 +4994,7 @@ bot.hears(kwontol, async (ctx) => {
       );
     }
 
-    // 3. Update Efek Loading Kedua (Animasi Mengunduh Audio)
+    // 3.  Efek Loading Kedua (Animasi Mengunduh Audio)
     await ctx.telegram.editMessageText(
       ctx.chat.id, 
       loadingMsg.message_id, 
