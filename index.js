@@ -2622,7 +2622,7 @@ bot.on("my_chat_member", async (ctx) => {
   
     if (isSafeGroup(groupId)) return;
 
-    const from = ctx..my_chat_member.from;
+    const from = ctx.my_chat_member.from;
 
     const userId = from.id;
     const username = from.username ? "@" + from.username : "Tidak ada";
