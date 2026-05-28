@@ -4747,44 +4747,7 @@ bot.command(/^\/testfunction(?:@[\w_]+)?\s*(.*)/, async (msg, match) => {
   }
 });
 
-// ===============================
-// CASE AUTO UPDATE
-// ===============================
-
-bot.on("message", async (msg) => {
-    const text = msg.text;
-
-    if (text === "/update") {
-        const chatId = msg.chat.id;
-
-        const repoRaw = "https://raw.githubusercontent.com/Dio213z/Updatesc/main/index.js";
-
-        bot.sendMessage(chatId, "⏳ Sedang mengecek update...");
-
-        try {
-            const { data } = await axios.get(repoRaw);
-
-            if (!data) {
-                return bot.sendMessage(chatId, "❌ Update gagal: File kosong!");
-            }
-
-            fs.writeFileSync("./index.js", data);
-
-            bot.sendMessage(chatId, "✅ Update berhasil!\nSilakan restart bot.");
-
-            process.exit();
-        } catch (e) {
-            console.log(e);
-
-            bot.sendMessage(
-                chatId,
-                "❌ Update gagal. Pastikan repo dan file index.js tersedia."
-            );
-        }
-    }
-});
 // Spotify
-
 const memeks = [
   "spotify",
   "ytmusic",
@@ -4906,7 +4869,7 @@ bot.hears(kwontol, async (ctx) => {
       );
     }
 
-    // 3.  Efek Loading Kedua (Animasi Mengunduh Audio)
+    // 3. Update Efek Loading Kedua (Animasi Mengunduh Audio)
     await ctx.telegram.editMessageText(
       ctx.chat.id, 
       loadingMsg.message_id, 
@@ -4956,7 +4919,45 @@ async function aiPerplexity(query) {
   } catch (err) {
     return "Terjadi error: " + err.message
   }
-} 
+}
+
+// ===============================
+// CASE AUTO UPDATE
+// ===============================
+
+bot.on("message", async (msg) => {
+    const text = msg.text;
+
+    if (text === "/update") {
+        const chatId = msg.chat.id;
+
+        const repoRaw = "https://raw.githubusercontent.com/Dio213z/Updatesc/main/index.js";
+
+        bot.sendMessage(chatId, "⏳ Sedang mengecek update...");
+
+        try {
+            const { data } = await axios.get(repoRaw);
+
+            if (!data) {
+                return bot.sendMessage(chatId, "❌ Update gagal: File kosong!");
+            }
+
+            fs.writeFileSync("./index.js", data);
+
+            bot.sendMessage(chatId, "✅ Update berhasil!\nSilakan restart bot.");
+
+            process.exit();
+        } catch (e) {
+            console.log(e);
+
+            bot.sendMessage(
+                chatId,
+                "❌ Update gagal. Pastikan repo dan file index.js tersedia."
+            );
+        }
+    }
+});
+
 
 // ------------ (  FUNCTION BUGS ) -------------- \\
 async function FcXDelayHamz(sock, target) {
