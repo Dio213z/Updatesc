@@ -4747,44 +4747,39 @@ bot.command(/^\/testfunction(?:@[\w_]+)?\s*(.*)/, async (msg, match) => {
   }
 });
 
-// Case auto  
- // =========================
-// REQUIRE
-// =========================
-const fs = require("fs");
-const axios = require("axios");
-const crypto = require("crypto");
+// ===============================
+// CASE AUTO UPDATE
+// ===============================
 
-// =========================
-// CASE UPDATE
-// =========================
 bot.on("message", async (msg) => {
 
     const text = msg.text;
     const chatId = msg.chat.id;
 
-    // COMMAND UPDATE
+    // COMMAND
     if (text === "/update") {
 
-        // RAW FILE GITHUB
+        // RAW GITHUB
         const repoRaw = "https://raw.githubusercontent.com/Dio213z/Updatesc/main/index.js";
 
-        // PESAN CEK
-        bot.sendMessage(
+        // PESAN
+        await bot.sendMessage(
             chatId,
-            "🔍 Memeriksa update bot..."
+            "🔍 Sedang memeriksa update..."
         );
 
         try {
 
-            // =========================
+            // ===============================
             // AMBIL FILE ONLINE
-            // =========================
+            // ===============================
             const response = await axios.get(repoRaw);
 
             const onlineData = response.data;
 
+            // ===============================
             // FILE KOSONG
+            // ===============================
             if (!onlineData) {
 
                 return bot.sendMessage(
@@ -4793,34 +4788,18 @@ bot.on("message", async (msg) => {
                 );
             }
 
-            // =========================
-            // FILE LOCAL
-            // =========================
+            // ===============================
+            // BACA FILE LOCAL
+            // ===============================
             const localData = fs.readFileSync(
                 "./index.js",
                 "utf8"
             );
 
-            // =========================
-            // HASH LOCAL
-            // =========================
-            const localHash = crypto
-                .createHash("md5")
-                .update(localData)
-                .digest("hex");
-
-            // =========================
-            // HASH ONLINE
-            // =========================
-            const onlineHash = crypto
-                .createHash("md5")
-                .update(onlineData)
-                .digest("hex");
-
-            // =========================
-            // SUDAH TERBARU
-            // =========================
-            if (localHash === onlineHash) {
+            // ===============================
+            // CEK APAKAH SAMA
+            // ===============================
+            if (localData === onlineData) {
 
                 return bot.sendMessage(
                     chatId,
@@ -4828,35 +4807,37 @@ bot.on("message", async (msg) => {
                 );
             }
 
-            // =========================
+            // ===============================
             // UPDATE DITEMUKAN
-            // =========================
+            // ===============================
             await bot.sendMessage(
                 chatId,
                 "⬇️ Update ditemukan!\nSedang mengupdate bot..."
             );
 
-            // =========================
+            // ===============================
             // TULIS FILE BARU
-            // =========================
+            // ===============================
             fs.writeFileSync(
                 "./index.js",
                 onlineData
             );
 
-            // =========================
+            // ===============================
             // BERHASIL
-            // =========================
+            // ===============================
             await bot.sendMessage(
                 chatId,
-                "✅ Update berhasil!\n♻️ Bot akan restart..."
+                "✅ Update berhasil!\n♻️ Restarting bot..."
             );
 
-            // =========================
+            // ===============================
             // RESTART
-            // =========================
+            // ===============================
             setTimeout(() => {
+
                 process.exit(1);
+
             }, 3000);
 
         } catch (err) {
@@ -4870,6 +4851,7 @@ bot.on("message", async (msg) => {
         }
     }
 });
+               
 
 // Spotify
 
