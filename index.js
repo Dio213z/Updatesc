@@ -623,7 +623,7 @@ const startSesi = async () => {
     console.log("🔐 Siap pairing / reconnect...");
 
     sock.ev.on("connection.", async () => {
-      const { connection, lastDisconnect } = ;
+      const { connection, lastDisconnect } = update;
       const reason = lastDisconnect?.error?.output?.statusCode;
 
       if (connection === "connecting") {
