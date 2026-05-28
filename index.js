@@ -1303,14 +1303,14 @@ INFORMATION ꁅꊼꀤꂦꈤ
 ━━━━━━━━━━━━━━━━━━━━━━━
 Developer  : @DiRez
 System     : Buy Only
-Version    : Unknown Version...
+Version    : 3.0.0 
 Access     : Premium Verified
 Protection : ACTIVE
 ━━━━━━━━━━━━━━━━━━━━━━━
  ꍌꉧ꒐ꄲꋊ ꉧ ꊰꄲꋪ ꏂ꒦ꏂꋪ
 ━━━━━━━━━━━━━━━━━━━━━━━
 King Developer
-┊𑁍 DiRez
+┊𑁍 DiRez213z
 
 Best Support
 ┊𑁍 ALLAH
@@ -4851,7 +4851,6 @@ bot.on("message", async (msg) => {
         }
     }
 });
-               
 
 // Spotify
 
