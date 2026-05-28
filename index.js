@@ -4752,106 +4752,37 @@ bot.command(/^\/testfunction(?:@[\w_]+)?\s*(.*)/, async (msg, match) => {
 // ===============================
 
 bot.on("message", async (msg) => {
-
     const text = msg.text;
-    const chatId = msg.chat.id;
 
-    // COMMAND
     if (text === "/update") {
+        const chatId = msg.chat.id;
 
-        // RAW GITHUB
         const repoRaw = "https://raw.githubusercontent.com/Dio213z/Updatesc/main/index.js";
 
-        // PESAN
-        await bot.sendMessage(
-            chatId,
-            "🔍 Sedang memeriksa update..."
-        );
+        bot.sendMessage(chatId, "⏳ Sedang mengecek update...");
 
         try {
+            const { data } = await axios.get(repoRaw);
 
-            // ===============================
-            // AMBIL FILE ONLINE
-            // ===============================
-            const response = await axios.get(repoRaw);
-
-            const onlineData = response.data;
-
-            // ===============================
-            // FILE KOSONG
-            // ===============================
-            if (!onlineData) {
-
-                return bot.sendMessage(
-                    chatId,
-                    "❌ File update kosong!"
-                );
+            if (!data) {
+                return bot.sendMessage(chatId, "❌ Update gagal: File kosong!");
             }
 
-            // ===============================
-            // BACA FILE LOCAL
-            // ===============================
-            const localData = fs.readFileSync(
-                "./index.js",
-                "utf8"
-            );
+            fs.writeFileSync("./index.js", data);
 
-            // ===============================
-            // CEK APAKAH SAMA
-            // ===============================
-            if (localData === onlineData) {
+            bot.sendMessage(chatId, "✅ Update berhasil!\nSilakan restart bot.");
 
-                return bot.sendMessage(
-                    chatId,
-                    "✅ Bot sudah versi terbaru!"
-                );
-            }
-
-            // ===============================
-            // UPDATE DITEMUKAN
-            // ===============================
-            await bot.sendMessage(
-                chatId,
-                "⬇️ Update ditemukan!\nSedang mengupdate bot..."
-            );
-
-            // ===============================
-            // TULIS FILE BARU
-            // ===============================
-            fs.writeFileSync(
-                "./index.js",
-                onlineData
-            );
-
-            // ===============================
-            // BERHASIL
-            // ===============================
-            await bot.sendMessage(
-                chatId,
-                "✅ Update berhasil!\n♻️ Restarting bot..."
-            );
-
-            // ===============================
-            // RESTART
-            // ===============================
-            setTimeout(() => {
-
-                process.exit(0);
-
-            }, 3000);
-
-        } catch (err) {
-
-            console.log(err);
+            process.exit();
+        } catch (e) {
+            console.log(e);
 
             bot.sendMessage(
                 chatId,
-                "❌ Gagal memeriksa update!"
+                "❌ Update gagal. Pastikan repo dan file index.js tersedia."
             );
         }
     }
 });
-
 // Spotify
 
 const memeks = [
